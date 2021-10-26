@@ -18,6 +18,7 @@ import { makeStyles } from '@mui/styles'
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: '#fff',
+    transform: 'translateZ(0)',
   },
   SearchInput: {
     opacity: '0.6',
@@ -34,7 +35,10 @@ export default function Header() {
   const classes = useStyles()
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#fff' }}>
+    <AppBar
+      position="static"
+      sx={{ backgroundColor: '#fff', transform: 'translateZ(0)' }}
+    >
       <Toolbar>
         <Grid container alignItems="center">
           <Grid item>

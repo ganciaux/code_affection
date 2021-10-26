@@ -21,6 +21,19 @@ const theme = createTheme({
       default: '#f4f5fd',
     },
   },
+  shape: {
+    borderRadius: '12px',
+  },
+  overrides: {
+    MuiAppBar: {
+      root: {
+        transform: 'translateZ(0)',
+      },
+    },
+    props: {
+      MuiIconButton: { disableRipple: true },
+    },
+  },
 })
 
 const useStyles = makeStyles((theme) => ({
@@ -40,7 +53,7 @@ function App() {
         <PageHeader
           title="Page title"
           subTitle="Page description"
-          icon={<PeopleOutlineOutlined />}
+          icon={<PeopleOutlineOutlined fontSize="large" />}
         />
       </div>
       <CssBaseline />
