@@ -4,6 +4,8 @@ import SideMenu from '../components/SideMenu'
 import Header from '../components/Header'
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
 import { makeStyles } from '@mui/styles'
+import PageHeader from '../components/PageHeader'
+import { PeopleOutlineOutlined } from '@mui/icons-material'
 
 const theme = createTheme({
   palette: {
@@ -35,6 +37,11 @@ function App() {
       <SideMenu />
       <div className={classes.appMain}>
         <Header />
+        <PageHeader
+          title="Page title"
+          subTitle="Page description"
+          icon={<PeopleOutlineOutlined />}
+        />
       </div>
       <CssBaseline />
     </ThemeProvider>
