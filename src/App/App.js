@@ -2,10 +2,10 @@ import React from 'react'
 import './App.css'
 import SideMenu from '../components/SideMenu'
 import Header from '../components/Header'
-import { createTheme, CssBaseline, ThemeProvider } from '@mui/material'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { CssBaseline } from '@mui/material'
 import { makeStyles } from '@mui/styles'
-import PageHeader from '../components/PageHeader'
-import { PeopleOutlineOutlined } from '@mui/icons-material'
+import Employees from '../pages/Employees/Employees'
 
 const theme = createTheme({
   palette: {
@@ -24,16 +24,6 @@ const theme = createTheme({
   shape: {
     borderRadius: '12px',
   },
-  overrides: {
-    MuiAppBar: {
-      root: {
-        transform: 'translateZ(0)',
-      },
-    },
-    props: {
-      MuiIconButton: { disableRipple: true },
-    },
-  },
 })
 
 const useStyles = makeStyles((theme) => ({
@@ -50,11 +40,7 @@ function App() {
       <SideMenu />
       <div className={classes.appMain}>
         <Header />
-        <PageHeader
-          title="Page title"
-          subTitle="Page description"
-          icon={<PeopleOutlineOutlined fontSize="large" />}
-        />
+        <Employees />
       </div>
       <CssBaseline />
     </ThemeProvider>
