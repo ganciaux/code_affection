@@ -1,7 +1,8 @@
 import { Grid } from '@mui/material'
 import React from 'react'
-import Controls from '../../components/controls/Controls'
+import {Controls} from '../../components/controls/Controls'
 import { useForm, Form } from '../../components/useForm'
+import * as employeeService from "../../services/employeeService";
 
 const genderItems = [
   { id: 'male', title: 'Male' },
@@ -16,7 +17,7 @@ const intialValues = {
   mobile: '',
   city: '',
   gender: 'male',
-  departmendId: '',
+  departmentId: '',
   hireDate: new Date(),
   isPermanent: false,
 }
@@ -26,7 +27,7 @@ export default function EmployeeForm() {
   return (
     <Form>
       <Grid container>
-        <Grid item sx={6}>
+        <Grid item xs={6}>
           <Controls.Input
             label="Full name"
             name="fullName"
@@ -41,13 +42,32 @@ export default function EmployeeForm() {
             onChange={handleInputChange}
           />
         </Grid>
-        <Grid item sx={6}>
+        <Grid item xs={6}>
           <Controls.RadioGroup
             name="gender"
             label="Gender"
             value={values.gender}
             onChange={handleInputChange}
             items={genderItems}
+          />
+          <Controls.Select
+            name="departmentId"
+            label="Department"
+            value={values.departmentId}
+            onChange={handleInputChange}
+            options={employeeService.getDepartmentCollection()}
+          />
+          <Controls.Checkbox
+            name="isPermanent"
+            label="Permanent employee"
+            value={values.isPermanent}
+            onChange={handleInputChange}
+          />
+          <Controls.DatePicker
+            name="hireDate"
+            label="Hire date"
+            value={values.hireDate}
+            onChange={handleInputChange}
           />
         </Grid>
       </Grid>
