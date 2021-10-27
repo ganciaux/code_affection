@@ -1,14 +1,13 @@
-import {
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Grid,
-  Radio,
-  RadioGroup,
-  TextField,
-} from '@mui/material'
+import { Grid } from '@mui/material'
 import React from 'react'
+import Controls from '../../components/controls/Controls'
 import { useForm, Form } from '../../components/useForm'
+
+const genderItems = [
+  { id: 'male', title: 'Male' },
+  { id: 'female', title: 'Female' },
+  { id: 'other', title: 'Other' },
+]
 
 const intialValues = {
   id: 0,
@@ -28,14 +27,13 @@ export default function EmployeeForm() {
     <Form>
       <Grid container>
         <Grid item sx={6}>
-          <TextField
-            variant="outlined"
+          <Controls.Input
             label="Full name"
             name="fullName"
             value={values.fullName}
             onChange={handleInputChange}
           />
-          <TextField
+          <Controls.Input
             variant="outlined"
             label="Email"
             name="email"
@@ -44,32 +42,13 @@ export default function EmployeeForm() {
           />
         </Grid>
         <Grid item sx={6}>
-          <FormControl>
-            <FormLabel>
-              <RadioGroup
-                row
-                name="gender"
-                value={values.gender}
-                onChange={handleInputChange}
-              >
-                <FormControlLabel
-                  value="male"
-                  control={<Radio></Radio>}
-                  label="male"
-                ></FormControlLabel>
-                <FormControlLabel
-                  value="female"
-                  control={<Radio></Radio>}
-                  label="female"
-                ></FormControlLabel>
-                <FormControlLabel
-                  value="others"
-                  control={<Radio></Radio>}
-                  label="others"
-                ></FormControlLabel>
-              </RadioGroup>
-            </FormLabel>
-          </FormControl>
+          <Controls.RadioGroup
+            name="gender"
+            label="Gender"
+            value={values.gender}
+            onChange={handleInputChange}
+            items={genderItems}
+          />
         </Grid>
       </Grid>
     </Form>
