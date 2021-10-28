@@ -10,15 +10,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }))
 
-export function useForm(intialValues) {
+export function useForm(intialValues, validateOnChange=false, validate) {
   const [values, setValues] = useState(intialValues)
-  const [errors, setErros] = useState({})
+  const [errors, setErrors] = useState({})
 
   const handleInputChange = (e) => {
     const { name, value } = e.target
     setValues({ ...values, [name]: value })
+    if (validateOnChange)
+     validate({[name]: value})
   }
-  return { values, setValues, errors, setErros, handleInputChange }
+
+  const resetForm = () => {
+    setValues(intialValues)
+    setErrors({})
+  }
+
+  return { values, setValues, errors, setErrors, handleInputChange, resetForm }
 }
 
 export function Form(props) {
