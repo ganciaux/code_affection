@@ -12,14 +12,21 @@ const useStyles = makeStyles((theme) => ({
 
 export function useForm(intialValues) {
   const [values, setValues] = useState(intialValues)
+  const [errors, setErros] = useState({})
+
   const handleInputChange = (e) => {
     const { name, value } = e.target
     setValues({ ...values, [name]: value })
   }
-  return { values, setValues, handleInputChange }
+  return { values, setValues, errors, setErros, handleInputChange }
 }
 
 export function Form(props) {
   const classes = useStyles()
-  return <form className={classes.root}>{props.children}</form>
+  const { children, ...other } = props
+  return (
+    <form className={classes.root} {...other}>
+      {children}
+    </form>
+  )
 }
