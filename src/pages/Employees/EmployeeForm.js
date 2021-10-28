@@ -1,8 +1,8 @@
 import { Grid } from '@mui/material'
 import React from 'react'
-import {Controls} from '../../components/controls/Controls'
+import { Controls } from '../../components/controls/Controls'
 import { useForm, Form } from '../../components/useForm'
-import * as employeeService from "../../services/employeeService";
+import * as employeeService from '../../services/employeeService'
 
 const genderItems = [
   { id: 'male', title: 'Male' },
@@ -35,10 +35,21 @@ export default function EmployeeForm() {
             onChange={handleInputChange}
           />
           <Controls.Input
-            variant="outlined"
             label="Email"
             name="email"
             value={values.email}
+            onChange={handleInputChange}
+          />
+          <Controls.Input
+            label="Mobile"
+            name="mobile"
+            value={values.mobile}
+            onChange={handleInputChange}
+          />
+          <Controls.Input
+            label="City"
+            name="city"
+            value={values.city}
             onChange={handleInputChange}
           />
         </Grid>
@@ -69,6 +80,10 @@ export default function EmployeeForm() {
             value={values.hireDate}
             onChange={handleInputChange}
           />
+          <div>
+            <Controls.Button type="submit" text="Submit" />
+            <Controls.Button text="Reset" color="secondary" />
+          </div>
         </Grid>
       </Grid>
     </Form>
