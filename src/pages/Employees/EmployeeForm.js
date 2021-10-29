@@ -23,28 +23,31 @@ const intialValues = {
 }
 
 export default function EmployeeForm() {
-  const validate = (fieldValues=values) => {
-    let temp = {...errors}
+  const validate = (fieldValues = values) => {
+    let temp = { ...errors }
     if ('fullName' in fieldValues)
-      temp.fullName = values.fullName ? '' : 'This field is required'
+      temp.fullName = fieldValues.fullName ? '' : 'This field is required'
     if ('email' in fieldValues)
-      temp.email = (/$^|.+@.+..+/).test(values.email) ? '' : 'Email is not valid'
+      temp.email = /$^|.+@.+..+/.test(fieldValues.email)
+        ? ''
+        : 'Email is not valid'
     if ('mobile' in fieldValues)
-      temp.mobile = values.mobile.length > 9 ? '' : 'Minimum 10 characters'
+      temp.mobile = fieldValues.mobile.length > 9 ? '' : 'Minimum 10 characters'
     if ('departmentId' in fieldValues)
-      temp.departmentId = values.departmentId.length !== 0 ? '' : 'This field is required'
+      temp.departmentId =
+        fieldValues.departmentId.length !== 0 ? '' : 'This field is required'
     setErrors({ ...temp })
-    if (fieldValues==values)
-      return Object.values(temp).every((x) => x === '')
+    if (fieldValues == values) return Object.values(temp).every((x) => x === '')
   }
 
   const { values, setValues, errors, setErrors, handleInputChange, resetForm } =
     useForm(intialValues, true, validate)
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    if (validate()){
-      alert('error')
+    e.preventDefault()
+    if (validate()) {
+      employeeService.insertEmployee(values)
+      resetForm()
     }
   }
 
@@ -110,7 +113,11 @@ export default function EmployeeForm() {
           />
           <div>
             <Controls.Button type="submit" text="Submit" />
-            <Controls.Button text="Reset" color="secondary" onClick={resetForm} />
+            <Controls.Button
+              text="Reset"
+              color="secondary"
+              onClick={resetForm}
+            />
           </div>
         </Grid>
       </Grid>
