@@ -1,16 +1,30 @@
 import React, { useState } from 'react'
 import EmployeeForm from './EmployeeForm'
 import PageHeader from '../../components/PageHeader'
-import { PeopleOutlineOutlined } from '@mui/icons-material'
-import { Paper, TableBody, TableCell, TableRow } from '@mui/material'
+import { PeopleOutlineOutlined, Search } from '@mui/icons-material'
+import {
+  InputAdornment,
+  Paper,
+  TableBody,
+  TableCell,
+  TableRow,
+} from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import useTable from '../../components/useTable'
 import * as employeeService from '../../services/employeeService'
+import { Controls } from '../../components/controls/Controls'
 
 const useStyles = makeStyles((theme) => ({
   pageContent: {
     margin: theme.spacing(5),
     padding: theme.spacing(5),
+  },
+  searchInput: {
+    width: '75%',
+  },
+  newButton: {
+    position: 'absolute',
+    right: '10px',
   },
 }))
 
@@ -32,8 +46,18 @@ export default function Employees() {
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTable(records, headCells, filterFn)
 
-  console.log(records)
-
+  const handleSearch = (e) => {
+    let target = e.target
+    setFilterFn({
+      fn: (items) => {
+        if (target.value === '') return items
+        else
+          return items.filter((x) =>
+            x.fullName.toLowerCase().includes(target.value),
+          )
+      },
+    })
+  }
   return (
     <>
       <PageHeader
@@ -43,6 +67,18 @@ export default function Employees() {
       />
       <Paper className={classes.pageContent}>
         <EmployeeForm />
+        <Controls.Input
+          label="Search employee"
+          className={classes.searchInput}
+          onChange={handleSearch}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <Search />
+              </InputAdornment>
+            ),
+          }}
+        />
         <TblContainer>
           <TblHead />
           <TableBody>
