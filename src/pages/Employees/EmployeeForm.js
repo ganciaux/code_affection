@@ -1,5 +1,5 @@
 import { Grid } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Controls } from '../../components/controls/Controls'
 import { useForm, Form } from '../../components/useForm'
 import * as employeeService from '../../services/employeeService'
@@ -22,7 +22,8 @@ const intialValues = {
   isPermanent: false,
 }
 
-export default function EmployeeForm() {
+export default function EmployeeForm(props) {
+  const { addOrEdit, recordForEdit } = props
   const validate = (fieldValues = values) => {
     let temp = { ...errors }
     if ('fullName' in fieldValues)
@@ -46,11 +47,20 @@ export default function EmployeeForm() {
   const handleSubmit = (e) => {
     e.preventDefault()
     if (validate()) {
+      /*
       employeeService.insertEmployee(values)
-      resetForm()
+      resetForm()*/
+      addOrEdit(values, resetForm)
     }
   }
 
+  useEffect(() => {
+    if (recordForEdit !== null) {
+      setValues({
+        ...recordForEdit,
+      })
+    }
+  }, [recordForEdit])
   return (
     <Form onSubmit={handleSubmit}>
       <Grid container>

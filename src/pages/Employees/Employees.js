@@ -38,11 +38,13 @@ const headCells = [
   { id: 'fullName', label: 'Employee Name' },
   { id: 'email', label: 'Email' },
   { id: 'mobile', label: 'Mobile Number' },
-  { id: 'department', label: 'Department', disableSorting: true },
+  { id: 'department', label: 'Department' },
+  { id: 'actions', label: 'Actions', disableSorting: true },
 ]
 
 export default function Employees() {
   const classes = useStyles()
+  const [recordForEdit, setRecordForEdit] = useState(null)
   const [records, setRecords] = useState(employeeService.getEmployees())
   const [filterFn, setFilterFn] = useState({
     fn: (items) => {
@@ -65,6 +67,28 @@ export default function Employees() {
       },
     })
   }
+
+  const addOrEdit = (employee, resetForm) => {
+    if (employee.id === 0) employeeService.insertEmployee(employee)
+    else employeeService.updateEmployee(employee)
+    resetForm()
+    setRecordForEdit(null)
+    setOpenPopup(false)
+    setRecords(employeeService.getEmployees())
+    /*
+    setNotify({
+      isOpen: true,
+      message: 'Submitted Successfully',
+      type: 'success',
+    })
+    */
+  }
+
+  const openInPopup = (item) => {
+    setRecordForEdit(item)
+    setOpenPopup(true)
+  }
+
   return (
     <>
       <PageHeader
@@ -91,7 +115,10 @@ export default function Employees() {
             variant="outlined"
             startIcon={<AddIcCallOutlined />}
             className={classes.newButton}
-            onClick={() => setOpenPopup(true)}
+            onClick={() => {
+              setRecordForEdit(null)
+              setOpenPopup(true)
+            }}
           />
         </Toolbar>
         <TblContainer>
@@ -103,6 +130,19 @@ export default function Employees() {
                 <TableCell>{item.email}</TableCell>
                 <TableCell>{item.mobile}</TableCell>
                 <TableCell>{item.department}</TableCell>
+                <TableCell>
+                  <Controls.ActionButton
+                    color="primary"
+                    onClick={() => {
+                      openInPopup(item)
+                    }}
+                  >
+                    <PeopleOutlineOutlined fontSize="small"></PeopleOutlineOutlined>
+                  </Controls.ActionButton>
+                  <Controls.ActionButton color="secondary">
+                    <PeopleOutlineOutlined fontSize="small"></PeopleOutlineOutlined>
+                  </Controls.ActionButton>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -110,7 +150,7 @@ export default function Employees() {
         <TblPagination />
       </Paper>
       <Popup title="Employee" openPopup={openPopup} setOpenPopup={setOpenPopup}>
-        <EmployeeForm />
+        <EmployeeForm addOrEdit={addOrEdit} recordForEdit={recordForEdit} />
       </Popup>
     </>
   )
