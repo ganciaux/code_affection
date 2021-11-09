@@ -1,18 +1,24 @@
 import React, { useState } from 'react'
 import EmployeeForm from './EmployeeForm'
 import PageHeader from '../../components/PageHeader'
-import { PeopleOutlineOutlined, Search } from '@mui/icons-material'
+import {
+  AddIcCallOutlined,
+  PeopleOutlineOutlined,
+  Search,
+} from '@mui/icons-material'
 import {
   InputAdornment,
   Paper,
   TableBody,
   TableCell,
   TableRow,
+  Toolbar,
 } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import useTable from '../../components/useTable'
 import * as employeeService from '../../services/employeeService'
 import { Controls } from '../../components/controls/Controls'
+import Popup from '../../components/Popup'
 
 const useStyles = makeStyles((theme) => ({
   pageContent: {
@@ -43,6 +49,7 @@ export default function Employees() {
       return items
     },
   })
+  const [openPopup, setOpenPopup] = useState(false)
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTable(records, headCells, filterFn)
 
@@ -66,19 +73,27 @@ export default function Employees() {
         icon={<PeopleOutlineOutlined fontSize="large" />}
       />
       <Paper className={classes.pageContent}>
-        <EmployeeForm />
-        <Controls.Input
-          label="Search employee"
-          className={classes.searchInput}
-          onChange={handleSearch}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Search />
-              </InputAdornment>
-            ),
-          }}
-        />
+        <Toolbar>
+          <Controls.Input
+            label="Search employee"
+            className={classes.searchInput}
+            onChange={handleSearch}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search />
+                </InputAdornment>
+              ),
+            }}
+          />
+          <Controls.Button
+            text="Add employee"
+            variant="outlined"
+            startIcon={<AddIcCallOutlined />}
+            className={classes.newButton}
+            onClick={() => setOpenPopup(true)}
+          />
+        </Toolbar>
         <TblContainer>
           <TblHead />
           <TableBody>
@@ -94,6 +109,9 @@ export default function Employees() {
         </TblContainer>
         <TblPagination />
       </Paper>
+      <Popup title="Employee" openPopup={openPopup} setOpenPopup={setOpenPopup}>
+        <EmployeeForm />
+      </Popup>
     </>
   )
 }
