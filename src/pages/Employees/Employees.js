@@ -20,6 +20,7 @@ import * as employeeService from '../../services/employeeService'
 import { Controls } from '../../components/controls/Controls'
 import Popup from '../../components/Popup'
 import Notification from '../../components/Notification'
+import ConfirmDialog from '../../components/ConfirmDialog'
 
 const useStyles = makeStyles((theme) => ({
   pageContent: {
@@ -54,6 +55,11 @@ export default function Employees() {
   })
   const [openPopup, setOpenPopup] = useState(false)
   const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
+  const [confirmDialog, setConfirmDialog] = useState({
+    isOpen: false,
+    title: '',
+    subTitle: '',
+  })
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTable(records, headCells, filterFn)
 
@@ -90,6 +96,7 @@ export default function Employees() {
   }
 
   const onDelete = (id) => {
+    setConfirmDialog({ ...confirmDialog, isOpen: false })
     employeeService.deleteEmployee(id)
     setRecords(employeeService.getEmployees())
     setNotify({
@@ -151,7 +158,14 @@ export default function Employees() {
                   </Controls.ActionButton>
                   <Controls.ActionButton
                     color="secondary"
-                    onClick={() => onDelete(item.id)}
+                    onClick={() => {
+                      setConfirmDialog({
+                        isOpen: true,
+                        title: 'Are you sure',
+                        subTitle: "You can't undo this operation",
+                        onConfirm: () => onDelete(item.id),
+                      })
+                    }}
                   >
                     <PeopleOutlineOutlined fontSize="small"></PeopleOutlineOutlined>
                   </Controls.ActionButton>
@@ -166,6 +180,10 @@ export default function Employees() {
         <EmployeeForm addOrEdit={addOrEdit} recordForEdit={recordForEdit} />
       </Popup>
       <Notification notify={notify} setNotify={setNotify} />
+      <ConfirmDialog
+        confirmDialog={confirmDialog}
+        setConfirmDialog={setConfirmDialog}
+      ></ConfirmDialog>
     </>
   )
 }
