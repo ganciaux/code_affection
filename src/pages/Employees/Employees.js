@@ -19,6 +19,7 @@ import useTable from '../../components/useTable'
 import * as employeeService from '../../services/employeeService'
 import { Controls } from '../../components/controls/Controls'
 import Popup from '../../components/Popup'
+import Notification from '../../components/Notification'
 
 const useStyles = makeStyles((theme) => ({
   pageContent: {
@@ -52,6 +53,7 @@ export default function Employees() {
     },
   })
   const [openPopup, setOpenPopup] = useState(false)
+  const [notify, setNotify] = useState({ isOpen: false, message: '', type: '' })
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTable(records, headCells, filterFn)
 
@@ -75,18 +77,26 @@ export default function Employees() {
     setRecordForEdit(null)
     setOpenPopup(false)
     setRecords(employeeService.getEmployees())
-    /*
     setNotify({
       isOpen: true,
       message: 'Submitted Successfully',
       type: 'success',
     })
-    */
   }
 
   const openInPopup = (item) => {
     setRecordForEdit(item)
     setOpenPopup(true)
+  }
+
+  const onDelete = (id) => {
+    employeeService.deleteEmployee(id)
+    setRecords(employeeService.getEmployees())
+    setNotify({
+      isOpen: true,
+      message: 'Deleted Successfully',
+      type: 'error',
+    })
   }
 
   return (
@@ -139,7 +149,10 @@ export default function Employees() {
                   >
                     <PeopleOutlineOutlined fontSize="small"></PeopleOutlineOutlined>
                   </Controls.ActionButton>
-                  <Controls.ActionButton color="secondary">
+                  <Controls.ActionButton
+                    color="secondary"
+                    onClick={() => onDelete(item.id)}
+                  >
                     <PeopleOutlineOutlined fontSize="small"></PeopleOutlineOutlined>
                   </Controls.ActionButton>
                 </TableCell>
@@ -152,6 +165,7 @@ export default function Employees() {
       <Popup title="Employee" openPopup={openPopup} setOpenPopup={setOpenPopup}>
         <EmployeeForm addOrEdit={addOrEdit} recordForEdit={recordForEdit} />
       </Popup>
+      <Notification notify={notify} setNotify={setNotify} />
     </>
   )
 }
