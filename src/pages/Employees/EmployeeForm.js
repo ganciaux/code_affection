@@ -38,7 +38,8 @@ export default function EmployeeForm(props) {
       temp.departmentId =
         fieldValues.departmentId.length !== 0 ? '' : 'This field is required'
     setErrors({ ...temp })
-    if (fieldValues == values) return Object.values(temp).every((x) => x === '')
+    if (fieldValues === values)
+      return Object.values(temp).every((x) => x === '')
   }
 
   const { values, setValues, errors, setErrors, handleInputChange, resetForm } =
@@ -60,7 +61,7 @@ export default function EmployeeForm(props) {
         ...recordForEdit,
       })
     }
-  }, [recordForEdit])
+  }, [recordForEdit, setValues])
   return (
     <Form onSubmit={handleSubmit}>
       <Grid container>

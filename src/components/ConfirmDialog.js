@@ -9,7 +9,7 @@ import {
 } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import React from 'react'
-import { Controls } from '../../components/controls/Controls'
+import { Controls } from './controls/Controls'
 
 const useStyles = makeStyles((theme) => ({
   dialog: {
@@ -54,8 +54,16 @@ export default function ConfirmDialog(props) {
         <Typography variant="subtitle2">{confirmDialog.subTitle}</Typography>
       </DialogContent>
       <DialogActions className={classes.dialogAction}>
-        <Controls.Button text="No" color="default" onClick={()=>setConfirmDialog({...confirmDialog, isOpen:false})}/>
-        <Controls.Button text="Yes" color="secondary" onClick={confirmDialog.onConfirm}/>
+        <Controls.Button
+          text="No"
+          color="primary"
+          onClick={() => setConfirmDialog({ ...confirmDialog, isOpen: false })}
+        />
+        <Controls.Button
+          text="Yes"
+          color="secondary"
+          onClick={confirmDialog.onConfirm}
+        />
       </DialogActions>
     </Dialog>
   )

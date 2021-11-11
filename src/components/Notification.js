@@ -1,4 +1,3 @@
-import { ClassNames } from '@emotion/react'
 import { Alert, Snackbar } from '@mui/material'
 import { makeStyles } from '@mui/styles'
 import React from 'react'
@@ -27,9 +26,7 @@ export default function Notification(props) {
       className={classes.root}
       onClose={handleClose}
     >
-      <Alert severity={notify.type} onClose={handleClose}>
-        {notify.message}
-      </Alert>
+      <Alert onClose={handleClose}>{notify.message}</Alert>
     </Snackbar>
   )
 }
